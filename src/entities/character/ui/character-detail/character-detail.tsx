@@ -6,7 +6,8 @@ export interface ICharacterDetail {
     status: string,
     species: string,
     type: string,
-    gender: string
+    gender: string,
+    id?: number
 }
 
 export const CharacterDetail = ({ name, image, status, species, type, gender }: ICharacterDetail) => {

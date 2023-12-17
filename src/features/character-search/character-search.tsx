@@ -1,28 +1,30 @@
 import { useDispatch, useSelector } from "react-redux"
 import { useNavigate } from "react-router-dom"
 
+import {ThunkDispatch} from "@reduxjs/toolkit";
+
 import { useQuery, useDebounce, useBinaryState } from "@/shared/utils/hooks"
 
 import { CharacterRow, ICharacterRow } from "@/entities/character"
-import { fetchCharacterAll } from "@/entities/character"
-import { fetchCharacterSearch, clearCharacterSearch } from "@/features/character-search"
+import { fetchCharacterAll, LoadingState } from "@/entities/character"
+import { fetchCharacterSearch } from "@/features/character-search"
 
 import { InputUI, ButtonUI } from "@/shared/ui"
 
 import "./character-search.scss"
 
 export const CharacterSearch = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const navigate = useNavigate()
     let query = useQuery()
 
     const [resultsCharacterSearch, resultsCharacterSearchShow, resultsCharacterSearchClose, resultsCharacterSearchToggle] = useBinaryState()
 
     const searchCharacters = useSelector((state: any) => state.searchCharacter.characters)
-    const searchCharactersStatus = useSelector((state: any) => state.searchCharacter.status)
+    const searchCharactersStatus = useSelector((state: any) => state.searchCharacter.loading)
 
-    let name = query.get("name")
-    let gender = query.get("gender")
+    let name: string = query.get("name")!
+    let gender: string = query.get("gender")!
 
     const debouncedFetchCharacterSearch = useDebounce(() => dispatch(fetchCharacterSearch({ name })), 600)
 
@@ -34,14 +36,12 @@ export const CharacterSearch = () => {
         if (name) debouncedFetchCharacterSearch()
         if (!name) {
             resultsCharacterSearchClose()
-            dispatch(clearCharacterSearch())
         }
         navigate(`?${query.toString()}`)
     }
 
     const handleClearSearch = (event) => {
         resultsCharacterSearchClose()
-        dispatch(clearCharacterSearch())
         query.delete("name")
         dispatch(fetchCharacterAll({ gender }))
         navigate(`?${query.toString()}`)
@@ -50,7 +50,6 @@ export const CharacterSearch = () => {
     const handleChooseSearch = (event) => {
         event.preventDefault()
         resultsCharacterSearchClose()
-        dispatch(clearCharacterSearch())
         dispatch(fetchCharacterAll({ name, gender }))
     }
 
@@ -59,7 +58,6 @@ export const CharacterSearch = () => {
         resultsCharacterSearchClose()
         query.set("name", name)
         dispatch(fetchCharacterAll({ name, gender }))
-        dispatch(clearCharacterSearch())
         navigate(`?${query.toString()}`)
     }
 
@@ -82,9 +80,9 @@ export const CharacterSearch = () => {
             </div>
             {resultsCharacterSearch && (
                 <div className="character-search__results">
-                    {searchCharactersStatus === "pending" && <div>Loading...</div>}
-                    {searchCharactersStatus === "failed" && <div>There is nothing here</div>}
-                    {searchCharactersStatus === "succeeded" && searchCharacters.length > 0 && searchCharacters.map(renderCharacterRow)}
+                    {searchCharactersStatus === LoadingState.Pending && <div>Loading...</div>}
+                    {searchCharactersStatus === LoadingState.Failed && <div>There is nothing here</div>}
+                    {searchCharactersStatus === LoadingState.Succeeded && searchCharacters.length > 0 && searchCharacters.map(renderCharacterRow)}
                 </div>
             )}
         </form>

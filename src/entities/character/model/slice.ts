@@ -1,10 +1,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchCharacterAll } from "@/entities/character"
 
+export enum LoadingState {
+    Idle = "idle",
+    Pending = "pending",
+    Succeeded = "succeeded",
+    Failed = "failed"
+}
+
 const initialState = {
     characters: [],
     info: {},
-    loading: 'idle' | 'pending' | 'succeeded' | 'failed'
+    loading: LoadingState.Idle as LoadingState
 };
 
 export const characterSlice = createSlice({
@@ -14,15 +21,15 @@ export const characterSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder.addCase(fetchCharacterAll.pending, (state, action) => {
-            state.status = "pending";
+            state.loading = LoadingState.Pending;
         });
         builder.addCase(fetchCharacterAll.fulfilled, (state, action) => {
-            state.status = "succeeded";
+            state.loading = LoadingState.Succeeded;
             state.characters = action.payload.results;
             state.info = action.payload.info;
         });
         builder.addCase(fetchCharacterAll.rejected, (state, action) => {
-            state.status = "failed";
+            state.loading = LoadingState.Failed;
         });
     }
 })

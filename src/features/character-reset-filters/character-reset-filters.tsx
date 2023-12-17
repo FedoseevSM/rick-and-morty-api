@@ -2,13 +2,15 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from "react-router-dom"
 import { useQuery } from '@/shared/utils/hooks';
 
+import {ThunkDispatch} from "@reduxjs/toolkit";
+
 import { fetchCharacterAll } from "@/entities/character"
 
 import { ButtonUI } from "@/shared/ui"
 
 
 export const CharacterResetFilters = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const navigate = useNavigate()
     let query = useQuery()
 

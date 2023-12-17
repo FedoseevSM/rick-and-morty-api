@@ -2,18 +2,20 @@ import { useDispatch } from "react-redux"
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@/shared/utils/hooks';
 
+import {ThunkDispatch} from "@reduxjs/toolkit";
+
 import { fetchCharacterAll } from "@/entities/character"
 
 import { SelectUI } from "@/shared/ui"
 
 
 export const CharacterGenderFilter = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     const navigate = useNavigate()
     let query = useQuery()
 
-    let name = query.get("name")
-    let gender = query.get("gender")
+    let name: string = query.get("name")!
+    let gender: string = query.get("gender")!
 
     const handleChangeGender = (event) => {
         gender = event.target.value

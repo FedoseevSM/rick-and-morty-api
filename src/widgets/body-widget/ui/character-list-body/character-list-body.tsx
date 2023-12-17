@@ -2,26 +2,28 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { useQuery, useBinaryState } from '@/shared/utils/hooks';
 
+import {ThunkDispatch} from "@reduxjs/toolkit";
+
 import { CharacterCard, ICharacterCard, CharacterDetail, ICharacterDetail } from "@/entities/character"
-import { fetchCharacterAll } from "@/entities/character"
+import { fetchCharacterAll, LoadingState } from "@/entities/character"
 
 import { ModalUI } from "@/shared/ui";
 
 import "./character-list-body.scss"
 
 export const CharacterListBody = () => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<ThunkDispatch<any, any, any>>();
     let query = useQuery()
 
     const [detailCharacter, setDetailCharacter] = useState({} as ICharacterDetail)
     const [modalCharacterDetail, modalCharacterDetailShow, modalCharacterDetailClose, modalCharacterDetailToggle] = useBinaryState()
 
     const characterList = useSelector((state: any) => state.character.characters)
-    const statusCharacterList = useSelector((state: any) => state.character.status)
+    const statusCharacterList = useSelector((state: any) => state.character.loading)
 
-    let page = query.get("page")
-    let gender = query.get("gender")
-    let name = query.get("name")
+    let page: number = Number.parseFloat(query.get("page")!)
+    let gender: string = query.get("gender")!
+    let name: string = query.get("name")!
 
     useEffect(() => {
         const promise = dispatch(fetchCharacterAll({ page, gender, name }))
@@ -30,12 +32,12 @@ export const CharacterListBody = () => {
         }
     }, [])
 
-    const handleCardClick = (character: ICharacterCard) => {
+    const handleCardClick = (character: ICharacterDetail) => {
         setDetailCharacter(character)
         modalCharacterDetailShow()
     }
 
-    const renderCharacterCard = (character: ICharacterCard) => {
+    const renderCharacterCard = (character: ICharacterDetail) => {
         return (
             <CharacterCard key={character.id} name={character.name} image={character.image} handleClick={() => handleCardClick(character)} />
         )
@@ -56,9 +58,9 @@ export const CharacterListBody = () => {
                         />
                     </ModalUI>
                 )}
-                {statusCharacterList === "pending" && <div>Loading...</div>}
-                {statusCharacterList === "failed" && <div>There is nothing here</div>}
-                {statusCharacterList === "succeeded" && characterList.length > 0 && characterList.map(renderCharacterCard)}
+                {statusCharacterList === LoadingState.Pending && <div>Loading...</div>}
+                {statusCharacterList === LoadingState.Failed && <div>There is nothing here</div>}
+                {statusCharacterList === LoadingState.Succeeded && characterList.length > 0 && characterList.map(renderCharacterCard)}
             </div>
         </section>
     )

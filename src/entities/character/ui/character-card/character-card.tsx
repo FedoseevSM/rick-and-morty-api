@@ -3,7 +3,7 @@ import "./character-card.scss"
 export interface ICharacterCard {
     name: string,
     image: string,
-    id: number,
+    id?: number,
     handleClick: () => void
 }
 

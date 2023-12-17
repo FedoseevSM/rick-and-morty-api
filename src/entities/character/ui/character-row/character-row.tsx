@@ -3,7 +3,7 @@ import "./character-row.scss"
 export interface ICharacterRow {
     name: string,
     image: string,
-    id: number,
+    id?: number,
     handleClick: any
 }
 
