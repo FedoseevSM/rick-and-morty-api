@@ -1,0 +1,14 @@
+.select-ui {
+    background: #000020 fixed linear-gradient(#000014, #000028 70%, #000050);
+    border: none;
+    color: #86ff4b;
+    cursor: pointer;
+    overflow-x: hidden;
+    padding: 0.5rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100%;
+    border: 1px solid #86ff4b;
+    border-radius: 4px;
+    display: inline-block;
+}

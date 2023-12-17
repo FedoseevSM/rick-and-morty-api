@@ -1,0 +1,11 @@
+.wrapper {
+    margin: 0 auto;
+    max-width: 1440px;
+    padding: 40px;
+}
+
+.main-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}

@@ -1,0 +1,21 @@
+.character-detail {
+    display: flex;
+}
+
+.character-detail__image {
+    border-radius: 10px 0 0 10px;
+}
+
+.character-detail__name {
+    color: #86ff4b;
+}
+
+.character-detail__property {
+    color: #68c8ff;
+    font-weight: 700;
+}
+
+.character-detail__specifications {
+    margin: auto 0;
+    padding: 14px;
+}

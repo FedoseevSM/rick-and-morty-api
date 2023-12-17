@@ -1,0 +1,14 @@
+.button-ui {
+    background-color: #86ff4b;
+    color: #000;
+    padding: 12px 8px;
+    border-radius: 4px;
+}
+
+.button-ui:hover {
+    background-color: #7ceb45;
+}
+
+.button-ui__button:disabled {
+    background-color: #32611a;
+}

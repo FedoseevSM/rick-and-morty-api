@@ -1,0 +1,9 @@
+.character-list-body {
+    min-height: 100vh;
+}
+
+.character-list-body__inner {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+}

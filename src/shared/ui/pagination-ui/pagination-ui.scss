@@ -1,0 +1,30 @@
+.pagination-ui {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.pagination-ui__button {
+    background-color: #86ff4b;
+    color: #000;
+    padding: 12px 8px;
+    border-radius: 4px;
+}
+
+.pagination-ui__button--not-allowed {
+    cursor: not-allowed;
+}
+
+.pagination-ui__button:hover {
+    background-color: #7ceb45;
+}
+
+.pagination-ui__button:active {
+    filter: brightness(.8);
+    transform: scale(.8);
+    transition: all .0.1s ease-in-out;
+}
+
+.pagination-ui__button:disabled {
+    background-color: #32611a;
+}
